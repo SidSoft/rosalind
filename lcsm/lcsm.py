@@ -21,6 +21,7 @@ AC
 """
 from rosalind import read_fasta
 
+
 def get_substrings(dna):
     substrings = []
     for i in range(0, len(dna) - 1):
@@ -32,10 +33,29 @@ def get_substrings(dna):
             if len(tiny_string) > 1:
                 substrings.append(tiny_string)
 
-    return substrings
+    return sorted(substrings, key=len, reverse=True)
 
 
-print(read_fasta('rosalind_lcsm.txt'))
+entries = read_fasta('rosalind_lcsm.txt')
+dna = entries[0]['line']
+substrings = get_substrings(dna)
+print(substrings)
 
-# f = open('rosalind_lcsm.txt', 'r')
-# outf = open('output.txt', 'w')
+motif = ''
+for substring in substrings:
+    if motif == '':
+        is_motif = True
+        i = 1
+        while is_motif and i < len(entries):
+            if substring in entries[i]['line']:
+                motif = substring
+            else:
+                motif = ''
+                is_motif = False
+            i += 1
+
+print(motif)
+
+outfile = open('output.txt', 'w')
+outfile.write(motif)
+outfile.close()

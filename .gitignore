@@ -1,0 +1,5 @@
+.idea/
+lcsm/output.txt
+__pycache__/
+test.py
+test.txt

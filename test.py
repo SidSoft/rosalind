@@ -21,4 +21,9 @@ def read_fasta(file):
     return strings
 
 
-print(read_fasta('test.txt'))
+def list_max(n):
+    print(max(n))
+
+
+n = []
+list_max(n)
