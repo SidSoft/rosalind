@@ -1,5 +1,4 @@
 .idea/
-lcsm/output.txt
 __pycache__/
-test.py
-test.txt
+lcsm/output.txt
+lgis/output.txt

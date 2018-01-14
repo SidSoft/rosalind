@@ -17,6 +17,7 @@ Sample Output
 5 4 2
 
 """
+from math import ceil
 
 file = "rosalind_lgis.txt"
 f = open(file, 'r')
@@ -24,29 +25,90 @@ f = open(file, 'r')
 num = int(f.readline().strip('\t\n'))
 sequence = f.readline().strip('\t\n').split(' ')
 
-inc = []
-desc = []
-inc_lg = "Empty"
+for i in range(0, len(sequence)):
+    sequence[i] = int(sequence[i])
 
-for i in range(0, num):
-    pointer = sequence[i]
-    subsequences_inc = []
-    for j in range(i + 1, num):
-        if sequence[j] > pointer:
-            subsequences_inc.append([pointer, sequence[j]])
-            for subsequence_inc in subsequences_inc:
-                if sequence[j] > subsequence_inc[-1]:
-                    subsequence_inc.append(sequence[j])
-    if len(subsequences_inc) > 0:
-        subsequence_inc_longest = subsequences_inc[0]
-        for subsequence_inc in subsequences_inc:
-            if len(subsequence_inc) > len(subsequence_inc_longest):
-                subsequence_inc_longest = subsequence_inc
-        inc.append(subsequence_inc_longest)
-if len(inc) > 0:
-    inc_lg = inc[0]
-    for subsequence in inc:
-        if len(subsequence) > len(inc_lg):
-            inc_lg = subsequence
+P = [None] * len(sequence)
+M = [None] * len(sequence)
+L = 1
+M[0] = 0
 
-print(inc_lg)
+for i in range(1, len(sequence)):
+    lower = 0
+    upper = L
+    if sequence[M[upper - 1]] < sequence[i]:
+        j = upper
+
+    else:
+        while upper - lower > 1:
+            mid = (upper + lower) // 2
+            if sequence[M[mid - 1]] < sequence[i]:
+                lower = mid
+            else:
+                upper = mid
+
+        j = lower
+
+    P[i] = M[j - 1]
+
+    if j == L or sequence[i] < sequence[M[j]]:
+        M[j] = i
+        L = max(L, j + 1)
+
+result = []
+pos = M[L - 1]
+for _ in range(L):
+    result.append(sequence[pos])
+    pos = P[pos]
+
+inc_lg = result[::-1]
+
+for i in range(0, len(inc_lg)):
+    inc_lg[i] = str(inc_lg[i])
+
+print(" ".join(inc_lg))
+
+P = [None] * len(sequence)
+M = [None] * len(sequence)
+L = 1
+M[0] = 0
+
+for i in range(1, len(sequence)):
+    lower = 0
+    upper = L
+    if sequence[M[upper - 1]] > sequence[i]:
+        j = upper
+
+    else:
+        while upper - lower > 1:
+            mid = (upper + lower) // 2
+            if sequence[M[mid - 1]] > sequence[i]:
+                lower = mid
+            else:
+                upper = mid
+
+        j = lower
+
+    P[i] = M[j - 1]
+
+    if j == L or sequence[i] > sequence[M[j]]:
+        M[j] = i
+        L = max(L, j + 1)
+
+result = []
+pos = M[L - 1]
+for _ in range(L):
+    result.append(sequence[pos])
+    pos = P[pos]
+
+desc_lg = result[::-1]
+
+for i in range(0, len(desc_lg)):
+    desc_lg[i] = str(desc_lg[i])
+
+print(" ".join(desc_lg))
+
+outfile = open('output.txt', 'w')
+outfile.write(" ".join(inc_lg) + '\n')
+outfile.write(" ".join(desc_lg))
+outfile.close()
