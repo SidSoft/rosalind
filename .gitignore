@@ -2,3 +2,6 @@
 __pycache__/
 lcsm/output.txt
 lgis/output.txt
+prtm/output.txt
+orf/output.txt
+revp/output.txt
