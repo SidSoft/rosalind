@@ -73,3 +73,9 @@ def reverse_complement(dna):
         complement += complement_pairs[dna[i]]
 
     return complement[::-1]
+
+
+def output(file, result):
+    outfile = open(file, "w")
+    outfile.write(result)
+    outfile.close()
